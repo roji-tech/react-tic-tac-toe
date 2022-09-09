@@ -1,0 +1,9 @@
+.root {
+  --bg-lighter: #ffffff42;
+  --bg-light: #1f1f38;
+  --bg-light: rgba(77, 181, 255, 0.4);
+  --bg-light: #D3DCF899;
+  color: #81c1ee;
+  background-color: linear-gradie;
+  transform: skew();
+}
