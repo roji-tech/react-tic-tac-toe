@@ -1,15 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import { LightModeProvider } from "./Context";
+import MainApp from "./App";
 import GlobalStyle from "./StyleGlobal";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <LightModeProvider>
-      <GlobalStyle />
-      <App />
-    </LightModeProvider>
+    <GlobalStyle />
+    <MainApp />
   </React.StrictMode>
 );

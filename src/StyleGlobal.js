@@ -7,43 +7,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-  --bg-white: #fff;
-  --white2: #ffffff10;
-
-  --bg-lighter: #d7e1fc;
-
-  --blue: 	#119bf1;
-  --blue1: 	#0769ff;
-  --blue2: 	#4db5ff;
-  --lightB: 	#3AB4F2;
-
-  --trans: #00000060;
-
-
-
-  --trans2: rgba(77, 181, 255, 0.4);
-  --black: rgba(0, 0, 0, 0.9);
-
-  --lg-width : 70%;
-  --md-width : 85%;
-  --sm-width : 90%;
-
-  
   /* DarkMode */
-  --dark: 	#1f1f38;
-  --dark-trans: 	#1f1f3880;
-  --bg-blue: 	#2c2c6c;
-  --white:  rgba(255, 255, 255, 0.8);
-
-    /* LightMode */
-  --bg-light:	 #81c1ee;
-  --bg-blue: 	#2c2c6c;
-  --white:  rgba(255, 255, 255, 0.8);
 
     width: 99.99%;
     display: flex;
     justify-content: center;
-    background-color: var(--bg-white);
   }
 
   * {
@@ -57,25 +25,18 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: 99.95%;
     font-size: 1.1rem;
+    height: 100vh;
 
     
     
     margin: 0;
     padding: 0;
     
-    .App{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-        color: ${({ lightMode }) =>
-          !lightMode ? "var(--white)" : "var(--black)"};
-    }
 
-    @media screen and (max-width: 1025px) {
-      ::-webkit-scrollbar{
-        display: none;
-      }
+    ::-webkit-scrollbar{
+      display: none;
     }
+    
 
   }
 
@@ -91,7 +52,6 @@ const GlobalStyle = createGlobalStyle`
     
     @media screen and (max-width: 600px) {
       width: var(--sm-width);
-      
     }
   }
 
