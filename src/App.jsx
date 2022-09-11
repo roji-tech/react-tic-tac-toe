@@ -2,26 +2,69 @@ import { useState, useEffect, useCallback } from "react";
 import AppStyle, { Row } from "./AppStyle";
 import Square from "./Square";
 import { Patterns } from "./patterns";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import AllHistory from "./AllHistory";
 
 const MainApp = () => {
+  const [history, setHistory] = useState([]);
+  const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+  const [state, setState] = useState(null);
+  const [save, setSave] = useState(false);
+  const [winner, setWinner] = useState(null);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="history" element={<AllHistory />} />
+        <Route
+          path="/"
+          element={
+            <App
+              history={history}
+              state={state}
+              board={board}
+              setHistory={setHistory}
+              setBoard={setBoard}
+              setState={setState}
+              save={save}
+              winner={winner}
+              setWinner={setWinner}
+              setSave={setSave}
+            />
+          }
+        />
+        <Route
+          path="history"
+          element={
+            <AllHistory
+              historyFunc={setHistory}
+              setBoard={setBoard}
+              setState={setState}
+              setSave={setSave}
+              save={save}
+              setWinner={setWinner}
+              u
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
 };
 
-const App = () => {
-  const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+const App = ({
+  history,
+  setHistory,
+  board,
+  setBoard,
+  state,
+  setState,
+  setSave,
+  winner,
+  setWinner,
+  save
+}) => {
   const [player, setPlayer] = useState("X");
-  const [winner, setwinner] = useState(null);
-  const [state, setState] = useState(null);
-  const [history, setHistory] = useState([]);
+  const navigate = useNavigate();
 
   const chooseSquare = (square) => {
     if (state !== "started") {
@@ -50,6 +93,7 @@ const App = () => {
         theWinner,
         game: [...board]
       };
+      console.log("new====================");
       list.push(newDict);
       return list;
     },
@@ -72,40 +116,57 @@ const App = () => {
 
       if (foundAWinnigPattern) {
         setState(() => "ended");
-        setwinner(theWinner);
+        setWinner(theWinner);
         setHistory((prev) => newHistory(prev, theWinner));
-        saveToLocal(history);
       }
     });
-  }, [board, newHistory, history]);
+  }, [board, newHistory]);
 
   const startGame = () => {
     if (state === "ended" || state === "started") {
-      setwinner(() => null);
+      setWinner(() => null);
+      setSave(false);
       setState(() => null);
       setPlayer(() => "X");
       return setBoard(["", "", "", "", "", "", "", "", ""]);
-    } else if (state !== "started") setState(() => "started");
+    } else if (state !== "started") {
+      setSave(true);
+      setState(() => "started");
+    }
+  };
+
+  const gotToHistory = () => {
+    setBoard(() => ["", "", "", "", "", "", "", "", ""]);
+    setState(() => null);
+    setWinner(null);
+    navigate("/history");
   };
 
   useEffect(() => {
-    checkWinState();
-  }, [board, checkWinState]);
+    if (save) checkWinState();
+  }, [board, save, checkWinState]);
 
-  useEffect(() => {
-    if (winner) {
-      alert(
-        "Player " +
-          winner +
-          " is the WINNER, You can click restart to play again."
-      );
-    }
-  }, [winner]);
+  useEffect(
+    useCallback(() => {
+      if (winner) {
+        alert(
+          "Player " +
+            winner +
+            " is the WINNER, You can click restart to play again."
+        );
+        if (save) {
+          saveToLocal(history);
+          setSave(false);
+        }
+      }
+    }, [winner, save, history]),
+    [winner, history]
+  );
 
   useEffect(() => {
     if (state === null) {
       setBoard(["", "", "", "", "", "", "", "", ""]);
-      setwinner(() => null);
+      setWinner(() => null);
       setPlayer(() => "X");
     }
   }, [state]);
@@ -118,7 +179,9 @@ const App = () => {
           {state === "started" || winner !== null ? "restart" : "start"}
         </div>
         <div className="history">
-          <Link to="/history">View History</Link>
+          <div onClick={gotToHistory} to="/history">
+            View History
+          </div>
         </div>
       </div>
       <div className="board">
