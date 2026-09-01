@@ -19,8 +19,8 @@ export const theme = {
   playerColors: {
     X: "#00f3ff",  // Neon Cyan
     O: "#ff007f",  // Neon Pink
-    Δ: "#00ff88",  // Emerald Green
-    ▢: "#ffb700"   // Amber Gold
+    "Δ": "#00ff88",  // Emerald Green
+    "▢": "#ffb700"   // Amber Gold
   },
   shadows: {
     cyanGlow: "0 0 20px rgba(0, 243, 255, 0.4)",
